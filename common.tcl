@@ -11,9 +11,15 @@ close $namfile
 exec nam aodv_simulation.nam & 
 exit 0 
 } 
-for {set i 0} {$i < 10} {incr i} {set n($i) [$ns node]} 
-for {set i 0} {$i < 9} {incr i} { 
-$ns duplex-link $n($i) $n([expr $i+1]) 2Mb 10ms DropTail 
+# Create 10 nodes
+set num_nodes 10
+for {set i 0} {$i < $num_nodes} {incr i} {
+    set n($i) [$ns node]
+}
+
+# Create bidirectional links (2Mb bandwidth, 10ms delay)
+for {set i 0} {$i < [expr $num_nodes - 1]} {incr i} {
+    $ns duplex-link $n($i) $n([expr $i + 1]) 2Mb 10ms DropTail
 }
 
 set opt(adhocRouting) DSR/GSR/AODV/DSDV/OLSR
